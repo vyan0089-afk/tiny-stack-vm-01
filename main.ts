@@ -31,15 +31,15 @@ function run(pg,inp){
       case 5:{const t=D[sp-1];D[sp-1]=D[sp-2];D[sp-2]=t;}break;
       case 6:D[sp]=D[sp-2];sp++;break;
       case 7:{const a=D[sp-3];D[sp-3]=D[sp-2];D[sp-2]=D[sp-1];D[sp-1]=a;}break;
-      case 23:D[sp-1]=-D[sp-1]|0;break;
-      case 27:D[sp-1]=~D[sp-1];break;
+      case 23:case 27:D[sp-1]=op===23?-D[sp-1]|0:~D[sp-1];break;
       case 16:case 17:case 18:case 19:case 20:case 21:case 22:case 24:case 25:case 26:case 28:case 29:case 30:case 32:case 33:case 34:{
         const b=D[sp-1],a=D[sp-2];let r=0;
+        if(op>=19&&op<=22&&!b)return done(4);
         if(op===16)r=a+b|0;else if(op===17)r=a-b|0;else if(op===18)r=Math.imul(a,b);
-        else if(op===19){if(!b)return done(4);r=a===-2147483648&&b===-1?a:(a/b)|0;}
-        else if(op===20){if(!b)return done(4);r=b===-1?0:a%b|0;}
-        else if(op===21){if(!b)return done(4);r=Math.floor((a>>>0)/(b>>>0))|0;}
-        else if(op===22){if(!b)return done(4);r=(a>>>0)%(b>>>0)|0;}
+        else if(op===19)r=a===-2147483648&&b===-1?a:(a/b)|0;
+        else if(op===20)r=b===-1?0:a%b|0;
+        else if(op===21)r=Math.floor((a>>>0)/(b>>>0))|0;
+        else if(op===22)r=(a>>>0)%(b>>>0)|0;
         else if(op===24)r=a&b;else if(op===25)r=a|b;else if(op===26)r=a^b;
         else if(op===28)r=a<<(b&31);else if(op===29)r=a>>(b&31);else if(op===30)r=(a>>>(b&31))|0;
         else if(op===32)r=a===b?1:0;else if(op===33)r=a<b?1:0;else r=(a>>>0)<(b>>>0)?1:0;
